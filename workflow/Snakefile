@@ -20,7 +20,7 @@ PIG_METAG = config.get('samples', samples_pig)
 
 rule all:
     input:
-        # expand('../results/rgi/check/{metag}.rgibwt.done', metag=PIG_METAG),
+        expand('../results/rgi/check/{metag}.rgibwt.done', metag=PIG_METAG),
         expand('../results/smash/fastgather/{metag}.{ksize}.csv', metag=PIG_METAG, ksize=KSIZE)
 
 rule rgi_bwt:
@@ -30,10 +30,10 @@ rule rgi_bwt:
     output:
         check = "../results/rgi/check/{metag}.rgibwt.done",
     params:
-        output_prefix=f"{OUTPUT_DIR}{{metag}}/{{metag}}"
+        output_prefix=f"{OUTPUT_DIR}/rgi_{{metag}}"
     conda: 
         "rgi"
-    threads: 12
+    threads: 15
     shell: 
         """
         mkdir -p $(dirname {params.output_prefix})
@@ -51,7 +51,7 @@ rule sketch_reads:
     output:
         sig = "../results/smash/signatures/{metag}.metag.zip",
     conda: 
-        "branchwater"
+        "branchwater-skipmer"
     threads: 1
     shell: 
         """
@@ -67,12 +67,12 @@ rule fastgather:
     output:
         csv = "../results/smash/fastgather/{metag}.{ksize}.csv",
     conda: 
-        "branchwater"
-    threads: 24
+        "branchwater-skipmer"
+    threads: 15
     shell:
         """ 
         sourmash scripts fastgather \
-        {input.sig} {input.db} -m dna \
+        {input.sig} {input.db} \
         -k {wildcards.ksize} --scaled 100 -t 0 \
         -c {threads} -o {output.csv}
         """
