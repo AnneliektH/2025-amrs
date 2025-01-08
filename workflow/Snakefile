@@ -1,0 +1,78 @@
+import os
+import pandas as pd
+
+# def ksizes
+KSIZE = [18,21,31,51]
+# KSIZE = 25
+# def outdir
+OUTPUT_DIR ="/group/ctbrowngrp2/amhorst/2025-amrs/results/rgi"
+ATLAS_DIR = "/group/ctbrowngrp2/scratch/annie/2023-swine-sra/results/atlas"
+
+# set configfile
+configfile: "../config/config.yaml" 
+# Set samples for human and pig
+metadata_metag = pd.read_csv(config['metag'], usecols=['acc'])
+# Create a list of run ids
+samples_pig = metadata_metag['acc'].tolist()
+# Define samples
+PIG_METAG = config.get('samples', samples_pig)
+
+
+rule all:
+    input:
+        # expand('../results/rgi/check/{metag}.rgibwt.done', metag=PIG_METAG),
+        expand('../results/smash/fastgather/{metag}.{ksize}.csv', metag=PIG_METAG, ksize=KSIZE)
+
+rule rgi_bwt:
+    input:
+        read_one=f"{ATLAS_DIR}/atlas_{{metag}}/{{metag}}/sequence_quality_control/{{metag}}_QC_R1.fastq.gz",
+        read_two=f"{ATLAS_DIR}/atlas_{{metag}}/{{metag}}/sequence_quality_control/{{metag}}_QC_R2.fastq.gz",
+    output:
+        check = "../results/rgi/check/{metag}.rgibwt.done",
+    params:
+        output_prefix=f"{OUTPUT_DIR}{{metag}}/{{metag}}"
+    conda: 
+        "rgi"
+    threads: 12
+    shell: 
+        """
+        mkdir -p $(dirname {params.output_prefix})
+        rgi bwt \
+        --read_one {input.read_one} \
+        --read_two {input.read_two} \
+        --output_file {params.output_prefix} \
+        --local --clean -n {threads} && touch {output.check}
+        """
+
+rule sketch_reads:
+    input:
+        read_one=f"{ATLAS_DIR}/atlas_{{metag}}/{{metag}}/sequence_quality_control/{{metag}}_QC_R1.fastq.gz",
+        read_two=f"{ATLAS_DIR}/atlas_{{metag}}/{{metag}}/sequence_quality_control/{{metag}}_QC_R2.fastq.gz"
+    output:
+        sig = "../results/smash/signatures/{metag}.metag.zip",
+    conda: 
+        "branchwater"
+    threads: 1
+    shell: 
+        """
+        sourmash sketch dna \
+        {input.read_one} {input.read_two} --merge {wildcards.metag} \
+        -p k=18,k=21,k=31,k=51,scaled=100 -o {output.sig}
+        """
+
+rule fastgather:
+    input:
+       sig = "../results/smash/signatures/{metag}.metag.zip",
+       db = '../resources/database/CARD_smash/nucleotide_card.zip'
+    output:
+        csv = "../results/smash/fastgather/{metag}.{ksize}.csv",
+    conda: 
+        "branchwater"
+    threads: 24
+    shell:
+        """ 
+        sourmash scripts fastgather \
+        {input.sig} {input.db} -m dna \
+        -k {wildcards.ksize} --scaled 100 -t 0 \
+        -c {threads} -o {output.csv}
+        """
