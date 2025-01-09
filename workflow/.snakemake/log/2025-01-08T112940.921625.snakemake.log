@@ -1,0 +1,152 @@
+host: cpu-3-50
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 30
+Rules claiming more threads will be scaled down.
+Provided resources: mem_mb=100000
+Job stats:
+job             count
+------------  -------
+all                 1
+fastgather          4
+rgi_bwt             1
+sketch_reads        1
+total               7
+
+Select jobs to execute...
+Execute 2 jobs...
+
+[Wed Jan  8 11:29:41 2025]
+localrule rgi_bwt:
+    input: /group/ctbrowngrp2/scratch/annie/2023-swine-sra/results/atlas/atlas_SRR5240728/SRR5240728/sequence_quality_control/SRR5240728_QC_R1.fastq.gz, /group/ctbrowngrp2/scratch/annie/2023-swine-sra/results/atlas/atlas_SRR5240728/SRR5240728/sequence_quality_control/SRR5240728_QC_R2.fastq.gz
+    output: ../results/rgi/check/SRR5240728.rgibwt.done
+    jobid: 1
+    reason: Missing output files: ../results/rgi/check/SRR5240728.rgibwt.done
+    wildcards: metag=SRR5240728
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: rgi
+
+[Wed Jan  8 11:29:45 2025]
+localrule sketch_reads:
+    input: /group/ctbrowngrp2/scratch/annie/2023-swine-sra/results/atlas/atlas_SRR5240728/SRR5240728/sequence_quality_control/SRR5240728_QC_R1.fastq.gz, /group/ctbrowngrp2/scratch/annie/2023-swine-sra/results/atlas/atlas_SRR5240728/SRR5240728/sequence_quality_control/SRR5240728_QC_R2.fastq.gz
+    output: ../results/smash/signatures/SRR5240728.metag.zip
+    jobid: 3
+    reason: Missing output files: ../results/smash/signatures/SRR5240728.metag.zip
+    wildcards: metag=SRR5240728
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+[Wed Jan  8 11:56:31 2025]
+Finished job 1.
+1 of 7 steps (14%) done
+[Wed Jan  8 12:11:13 2025]
+Finished job 3.
+2 of 7 steps (29%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Wed Jan  8 12:11:13 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.31.csv
+    jobid: 5
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.31.csv; Input files updated by another job: ../results/smash/signatures/SRR5240728.metag.zip
+    wildcards: metag=SRR5240728, ksize=31
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+
+[Wed Jan  8 12:11:13 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.18.csv
+    jobid: 2
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.18.csv; Input files updated by another job: ../results/smash/signatures/SRR5240728.metag.zip
+    wildcards: metag=SRR5240728, ksize=18
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+[Wed Jan  8 12:11:15 2025]
+Error in rule fastgather:
+    jobid: 2
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.18.csv
+    conda-env: branchwater-skipmer
+    shell:
+         
+        sourmash scripts fastgather         ../results/smash/signatures/SRR5240728.metag.zip ../resources/database/CARD_smash/nucleotide_card.zip -m dna         -k 18 --scaled 100 -t 0         -c 15 -o ../results/smash/fastgather/SRR5240728.18.csv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Wed Jan  8 12:11:15 2025]
+Error in rule fastgather:
+    jobid: 5
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.31.csv
+    conda-env: branchwater-skipmer
+    shell:
+         
+        sourmash scripts fastgather         ../results/smash/signatures/SRR5240728.metag.zip ../resources/database/CARD_smash/nucleotide_card.zip -m dna         -k 31 --scaled 100 -t 0         -c 15 -o ../results/smash/fastgather/SRR5240728.31.csv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Jan  8 12:11:15 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.51.csv
+    jobid: 6
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.51.csv; Input files updated by another job: ../results/smash/signatures/SRR5240728.metag.zip
+    wildcards: metag=SRR5240728, ksize=51
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+Select jobs to execute...
+Execute 1 jobs...
+
+[Wed Jan  8 12:11:15 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.21.csv
+    jobid: 4
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.21.csv; Input files updated by another job: ../results/smash/signatures/SRR5240728.metag.zip
+    wildcards: metag=SRR5240728, ksize=21
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+[Wed Jan  8 12:11:17 2025]
+Error in rule fastgather:
+    jobid: 6
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.51.csv
+    conda-env: branchwater-skipmer
+    shell:
+         
+        sourmash scripts fastgather         ../results/smash/signatures/SRR5240728.metag.zip ../resources/database/CARD_smash/nucleotide_card.zip -m dna         -k 51 --scaled 100 -t 0         -c 15 -o ../results/smash/fastgather/SRR5240728.51.csv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Wed Jan  8 12:11:17 2025]
+Error in rule fastgather:
+    jobid: 4
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/nucleotide_card.zip
+    output: ../results/smash/fastgather/SRR5240728.21.csv
+    conda-env: branchwater-skipmer
+    shell:
+         
+        sourmash scripts fastgather         ../results/smash/signatures/SRR5240728.metag.zip ../resources/database/CARD_smash/nucleotide_card.zip -m dna         -k 21 --scaled 100 -t 0         -c 15 -o ../results/smash/fastgather/SRR5240728.21.csv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-01-08T112940.921625.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

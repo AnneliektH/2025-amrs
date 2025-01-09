@@ -1,0 +1,93 @@
+host: cpu-4-86
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 30
+Rules claiming more threads will be scaled down.
+Provided resources: mem_mb=50000
+Job stats:
+job           count
+----------  -------
+all               1
+fastgather        4
+total             5
+
+Select jobs to execute...
+Execute 2 jobs...
+
+[Thu Jan  9 12:33:32 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/card_protein_homolog_model.nucleotide.zip
+    output: ../results/smash/fastgather/SRR5240728.31.csv
+    jobid: 5
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.31.csv
+    wildcards: metag=SRR5240728, ksize=31
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+
+[Thu Jan  9 12:33:34 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/card_protein_homolog_model.nucleotide.zip
+    output: ../results/smash/fastgather/SRR5240728.18.csv
+    jobid: 2
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.18.csv
+    wildcards: metag=SRR5240728, ksize=18
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+[Thu Jan  9 12:35:57 2025]
+Finished job 5.
+1 of 5 steps (20%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Jan  9 12:35:57 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/card_protein_homolog_model.nucleotide.zip
+    output: ../results/smash/fastgather/SRR5240728.51.csv
+    jobid: 6
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.51.csv
+    wildcards: metag=SRR5240728, ksize=51
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+[Thu Jan  9 12:38:00 2025]
+Finished job 6.
+2 of 5 steps (40%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Jan  9 12:38:01 2025]
+localrule fastgather:
+    input: ../results/smash/signatures/SRR5240728.metag.zip, ../resources/database/CARD_smash/card_protein_homolog_model.nucleotide.zip
+    output: ../results/smash/fastgather/SRR5240728.21.csv
+    jobid: 4
+    reason: Missing output files: ../results/smash/fastgather/SRR5240728.21.csv
+    wildcards: metag=SRR5240728, ksize=21
+    threads: 15
+    resources: tmpdir=/tmp
+
+Activating conda environment: branchwater-skipmer
+[Thu Jan  9 12:41:24 2025]
+Finished job 4.
+3 of 5 steps (60%) done
+[Thu Jan  9 13:14:18 2025]
+Finished job 2.
+4 of 5 steps (80%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Jan  9 13:14:18 2025]
+localrule all:
+    input: ../results/rgi/check/SRR5240728.rgibwt.done, ../results/smash/fastgather/SRR5240728.18.csv, ../results/smash/fastgather/SRR5240728.21.csv, ../results/smash/fastgather/SRR5240728.31.csv, ../results/smash/fastgather/SRR5240728.51.csv
+    jobid: 0
+    reason: Input files updated by another job: ../results/smash/fastgather/SRR5240728.21.csv, ../results/smash/fastgather/SRR5240728.18.csv, ../results/smash/fastgather/SRR5240728.51.csv, ../results/smash/fastgather/SRR5240728.31.csv
+    resources: tmpdir=/tmp
+
+[Thu Jan  9 13:14:18 2025]
+Finished job 0.
+5 of 5 steps (100%) done
+Complete log: .snakemake/log/2025-01-09T123331.867837.snakemake.log

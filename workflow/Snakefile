@@ -63,7 +63,7 @@ rule sketch_reads:
 rule fastgather:
     input:
        sig = "../results/smash/signatures/{metag}.metag.zip",
-       db = '../resources/database/CARD_smash/nucleotide_card.zip'
+       db = '../resources/database/CARD_smash/card_protein_homolog_model.nucleotide.zip'
     output:
         csv = "../results/smash/fastgather/{metag}.{ksize}.csv",
     conda: 
