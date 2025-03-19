@@ -22,9 +22,10 @@ PIG_METAG = config.get('samples', samples_pig)
 
 rule all:
     input:
-        expand("../results/compare_all/check/{metag}.rgi.{aligner}.done", metag=PIG_METAG, aligner=ALIGNERS),
-        expand("../results/compare_all/{metag}.{ksize}.csv", metag=PIG_METAG, ksize=KSIZE),
-        expand("../results/compare_all/{metag}.skipmer.csv", metag=PIG_METAG)
+        #expand("../results/compare_all/check/{metag}.rgi.{aligner}.done", metag=PIG_METAG, aligner=ALIGNERS),
+        expand("../results/compare_all/{metag}.{ksize}.s1000.dbconcat.csv", metag=PIG_METAG, ksize=KSIZE),
+        #expand("../results/compare_all/skipmer.{metag}.csv", metag=PIG_METAG)
+
 
 
 # Use all
@@ -35,8 +36,8 @@ rule rgi:
     output:
         check = "../results/compare_all/check/{metag}.rgi.{aligner}.done",
     params:
-        output_prefix=f"{OUTPUT_DIR}/rgi_{{metag}}.{{wildcards.aligner}}"
-    benchmark: f"{logs_dir}/rgi.{{metag}}.{{wildcards.aligner}}.benchmark"
+        output_prefix=f"{OUTPUT_DIR}/rgi_{{metag}}.{{aligner}}"
+    benchmark: f"{logs_dir}/rgi.{{metag}}.{{aligner}}.benchmark"
     conda: 
         "rgi"
     threads: 15
@@ -44,7 +45,7 @@ rule rgi:
         """
         mkdir -p $(dirname {params.output_prefix})
         rgi bwt \
-        -a {wildcards.aligner}
+        -a {wildcards.aligner} \
         --read_one {input.read_one} \
         --read_two {input.read_two} \
         --output_file {params.output_prefix} \
@@ -55,10 +56,10 @@ rule rgi:
 # sourmash x the whole db
 rule fastgather:
     input:
-       sig = "../results/smash/signatures/{metag}.metag.zip",
-       db = '../resources/database/CARD_smash/card_protein_homolog_model.nucleotide.zip'
+       sig = "/group/ctbrowngrp2/amhorst/2025-pigparadigm/results/sketches_metag/{metag}.zip",
+       db = '../resources/database/CARD_smash/card_protein_homolog.merge.nucleotide.zip'
     output:
-        csv = "../results/compare_all/{metag}.{ksize}.csv",
+        csv = "../results/compare_all/{metag}.{ksize}.s1000.dbconcat.csv",
     conda: 
         "branchwater-skipmer"
     threads: 15
@@ -67,15 +68,16 @@ rule fastgather:
         """ 
         sourmash scripts fastgather \
         {input.sig} {input.db} \
-        -k {wildcards.ksize} --scaled 100 -t 0 \
+        -k {wildcards.ksize} --scaled 1000 -t 0 \
         -c {threads} -o {output.csv}
         """
+
 rule fastgather_skip:
     input:
        sig = "../resources/sketches/{metag}.skipmer.zip",
        db = '../resources/database/CARD_smash/nucleotide_card.prothomolog.skipmer.zip'
     output:
-        csv = "../results/compare_all/{metag}.skipmer.csv",
+        csv = "../results/compare_all/skipmer.{metag}.csv",
     conda: 
         "branchwater-skipmer"
     threads: 15
